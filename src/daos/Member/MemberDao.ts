@@ -321,4 +321,20 @@ export default class MemberDao {
             return reject(err)
         });
     })
+    selectLocker = (conn?:any) => new Promise((resolve, reject) => {
+        let sql = "SELECT * \
+                    FROM locker"
+
+
+        database.query(sql, [], conn).then(
+            (result: any) => {
+                resolve(result)
+            }
+        ).catch((err) => {
+            console.log('locker show Error : ')
+            console.log(err)
+            return reject(err)
+        });
+    })
+
 }

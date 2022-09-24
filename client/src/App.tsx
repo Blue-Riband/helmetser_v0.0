@@ -17,12 +17,13 @@ import AuthEmail from './components/auth/Email'
 import AuthPassword from './components/auth/Password'
 import PersonalInfo from './components/auth/PersonalInfo'
 
-import Map from './components/Map'
+import Map from './components/Map';
 import MyPage from './components/MyPage'
 import MyUse from './components/Myuse';
 import Guide from './components/Guide';
 import QnA from './components/QnA';
 import Setting from './components/Setting';
+import Locker from './components/Locker';
 
 const useStyles = makeStyles({
   snackBar: {
@@ -123,6 +124,7 @@ function App(props:any) {
               <Switch>
               <Redirect exact from="/" to="/map"></Redirect>
                 <Route path="/map" component={() => <Map member={member}/>}></Route>
+                <Route path="/locker/:lockerId" component={() => <Locker member={member}/>}></Route>
                 <Route path="/mypage" component={() => <MyPage member={member}/>}></Route>
                 <Route path="/myuse" component={() => <MyUse member={member}/>}></Route>
                 <Route path="/qna" component={() => <QnA member={member}/>}></Route>
