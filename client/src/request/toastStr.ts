@@ -5,6 +5,8 @@ const ToastStr = {
 
     //사용자 정보 관련
     LOGIN_FAIL: "로그인에 실패하였습니다.",
+    PAY_SUCCESS_STR: "결제에 성공하셨습니다!",
+    PAY_FAIL_STR: "결제에 실패하셨습니다!",
     LOGIN_ZERO_LENGTH : "이메일과 비밀번호를 모두 입력해 주세요.",
     EMAIL_CHECK_STR : "정확한 이메일계정과 주소를 입력해주세요.",
     EMAIL_ADDR_CHECK_LEN : "이메일 주소는 32자 이내입니다.",

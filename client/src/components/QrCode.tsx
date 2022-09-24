@@ -18,6 +18,7 @@ const QrCode: React.FC<any> = props =>  {
 
   const handleScan = (res: any) => {
     console.log(res)
+    
     if (res) {
       setResult(res.data);
     }
