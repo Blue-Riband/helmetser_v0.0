@@ -1,4 +1,5 @@
 export const COLORS:any = {
+    BLACK: '#000000',
     WATER_BLUE: '#1291d9',
     PUMPKIN: '#ef7d00',
     WHITE: '#ffffff',
@@ -10,6 +11,7 @@ export const COLORS:any = {
     BROWNISH_GREY: '#707070',
     GREEN: '#04ba6f',
     LIGHT_GREY: '#efefef',
+    HELMETSER: '#FF4500',
 }
 
 export const FONTS:any = {

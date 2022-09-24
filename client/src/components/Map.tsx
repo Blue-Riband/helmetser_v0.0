@@ -40,7 +40,19 @@ const useStyles = makeStyles((theme) => ({
     display: "grid",
     width: "100vw",
     height: "100vh",
-    gridTemplateRows: "2fr 3fr 35fr 3fr 2fr",
+    gridTemplateRows: "5fr 35fr 3fr 2fr",
+  },
+  headbar: {
+    display: "grid",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    gridTemplateColumns: "1fr 4fr 1fr",
+    backgroundColor: `${COLORS.WHITE}`,
+    color: `${COLORS.HELMETSER}`,
+    width: "100%",
+    heigth: "100%",
+    zIndex: 2,
   },
   middle: {
     display: "grid",
@@ -63,11 +75,10 @@ const useStyles = makeStyles((theme) => ({
     width: "15vw",
     height: "15vw",
     padding: 0,
-    marginLeft: "8vw",
+    marginLeft: "3vw",
     zIndex: 2,
     minWidth: 0,
     backgroundColor: "white",
-    border: "1px grey solid",
     borderRadius: "20%",
   },
   content: {
@@ -98,7 +109,8 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: "white",
     borderRadius: "50%",
-    border: "1px grey solid",
+    // border: "1px grey solid",
+    boxShadow: "2px 2px 10px black",
   },
   qrLabel: {
     width: "100%",
@@ -162,8 +174,6 @@ const Map: React.FC<any> = (props) => {
     }
   };
 
-  // 사이드바 외부 클릭시 닫히는 함수
-
   const getLocker = () => {
     let url = new URL(SERVER + v_member.member + v_member.get_locker);
     let params = {};
@@ -190,6 +200,7 @@ const Map: React.FC<any> = (props) => {
       });
   };
 
+  // 사이드바 외부 클릭시 닫히는 함수
   const onClickOutside = (event: Event) => {
     let sideArea = side.current;
     let sideChildren = side.current?.contains(event.target as Node);
@@ -212,9 +223,6 @@ const Map: React.FC<any> = (props) => {
   };
   const moveMyUse = () => {
     history.push("/myuse");
-  };
-  const moveQnA = () => {
-    history.push("/qna");
   };
   const moveGuide = () => {
     history.push("/guide");
@@ -315,10 +323,12 @@ const Map: React.FC<any> = (props) => {
       }}
     >
       <Container component="main" className={classes.container}>
-        <div></div>
-        <Button onClick={() => toggleMenu()} className={classes.buttonLabel}>
-          <img className={classes.menuButton} src="/images/menu.png"></img>
-        </Button>
+        <div className={classes.headbar}>
+          <Button onClick={() => toggleMenu()} className={classes.buttonLabel}>
+            <img className={classes.menuButton} src="/images/menu.png"></img>
+          </Button>
+          <h2>HELMETSER</h2>
+        </div>
         <div className={classes.middle}>
           <div></div>
           <div></div>
@@ -347,7 +357,6 @@ const Map: React.FC<any> = (props) => {
             <Typography className={classes.name2}>안녕하세요!</Typography>
             <ul onClick={() => moveMypage()}>내 정보 보기</ul>
             <ul onClick={() => moveMyUse()}>이용 현황</ul>
-            <ul onClick={() => moveQnA()}>문의 게시판</ul>
             <ul onClick={() => moveGuide()}>이용 안내</ul>
             <ul onClick={() => moveSetting()}>설정</ul>
           </div>

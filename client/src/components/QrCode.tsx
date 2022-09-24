@@ -1,23 +1,22 @@
-
 import { useState } from "react";
-import  QrReader from "react-web-qr-reader"
+import QrReader from "react-web-qr-reader";
 import axios from "axios";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-const QrCode: React.FC<any> = props =>  {
-  let history = useHistory()
+const QrCode: React.FC<any> = (props) => {
+  let history = useHistory();
   const delay = 500;
 
   const previewStyle = {
-    height: 240,
-    width: 320
+    height: "100%",
+    width: "100%",
   };
 
   const [result, setResult] = useState<string>("");
 
   const handleScan = (res: any) => {
-    console.log(res)
+    console.log(res);
     if (res) {
       setResult(res.data);
     }
@@ -27,11 +26,11 @@ const QrCode: React.FC<any> = props =>  {
     console.log(error);
   };
 
-  useEffect(()=>{
-    if(result != ""){
-      history.push('/map')
+  useEffect(() => {
+    if (result != "") {
+      history.push("/map");
     }
-  },[result])
+  }, [result]);
 
   return (
     <>
