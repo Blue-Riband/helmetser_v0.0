@@ -24,6 +24,8 @@ import QnA from "./components/QnA";
 import Setting from "./components/Setting";
 import Locker from "./components/Locker";
 import QrCode from "./components/QrCode";
+import Pay from "./components/Pay";
+import PayComplete from "./components/PayComplete";
 
 const useStyles = makeStyles({
   snackBar: {
@@ -169,6 +171,14 @@ function App(props: any) {
               <Route
                 path="/qrcode"
                 component={() => <QrCode member={member} />}
+              ></Route>
+              <Route
+                path="/pay"
+                component={() => <Pay member={member} />}
+              ></Route>
+              <Route
+                path="/payComplete"
+                component={() => <PayComplete member={member} />}
               ></Route>
             </Switch>
           </BrowserRouter>

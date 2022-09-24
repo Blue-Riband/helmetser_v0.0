@@ -321,6 +321,7 @@ export default class MemberDao {
             return reject(err)
         });
     })
+
     selectLocker = (conn?:any) => new Promise((resolve, reject) => {
         let sql = "SELECT * \
                     FROM locker"
@@ -337,4 +338,112 @@ export default class MemberDao {
         });
     })
 
+    updateMemberPoint = (member_id: string, point: number, conn?: any) => new Promise((resolve, reject) => {
+        let sql = "UPDATE member \
+                    SET point = point + ?\
+                    WHERE member_id = ?";
+
+        database.query(sql, [point, member_id], conn).then((result: any) => {
+            if (result.affectedRows != 1) throw { code: 'updateMemberPoint', err: 'Update Member Point Error!' }
+            resolve(result)
+        })
+            .catch(err => {
+                console.log('updateMemberPoint Error : ')
+                console.log(err)
+                reject(err)
+            });
+    }) 
+
+    selectRoom = (lockerId: number, roomId: number, conn?:any) => new Promise((resolve, reject) => {
+        let sql = "SELECT r.status, h.helmet_id, h.status as helmet_status \
+                    FROM room r JOIN helmet h\
+                        ON r.locker_id = h.locker_id AND r.room_id = h.room_id\
+                    WHERE r.locker_id = ? AND r.room_id = ?"
+
+
+        database.query(sql, [lockerId, roomId], conn).then(
+            (result: any) => {
+                resolve(result)
+            }
+        )
+    })
+
+    insertRentSheet = (memberId: string, helmetId: number, startLocker: number, startRoom: number, conn?:any) => new Promise((resolve, reject) => {
+        let sql = "INSERT INTO rent_sheet VALUES (?, ?, ?, ?, NOW(), 0, 0, NULL, 0)"
+
+
+        database.query(sql, [memberId, helmetId, startLocker, startRoom], conn).then(
+            (result: any) => {
+                resolve(result)
+            }
+        ).catch(err => {
+            console.log('insertRentSheet Error : ')
+            console.log(err)
+            reject(err)
+        });
+    })
+
+    updateMemberStatusBorrowing = (member_id: string, conn?: any) => new Promise((resolve, reject) => {
+        let sql = "UPDATE member \
+                    SET status = 1\
+                    WHERE member_id = ?";
+
+        database.query(sql, [member_id], conn).then((result: any) => {
+            if (result.affectedRows != 1) throw { code: 'updateMemberClass', err: 'Update Member Class Error!' }
+            resolve(result)
+        })
+            .catch(err => {
+                console.log('updateMemberClass Error : ')
+                console.log(err)
+                reject(err)
+            });
+    }) 
+
+    updateHelmetStatusBorrowing = (helmet_id: string, conn?: any) => new Promise((resolve, reject) => {
+        let sql = "UPDATE helmet \
+                    SET status = 1\
+                    WHERE helmet_id = ?";
+
+        database.query(sql, [helmet_id], conn).then((result: any) => {
+            if (result.affectedRows != 1) throw { code: 'updateHelmetClass', err: 'Update Helmet Class Error!' }
+            resolve(result)
+        })
+            .catch(err => {
+                console.log('updateHelmetClass Error : ')
+                console.log(err)
+                reject(err)
+            });
+    })
+    
+    updateLockerCurrent = (locker_id: string, conn?: any) => new Promise((resolve, reject) => {
+        let sql = "UPDATE locker \
+                    SET current_capacity = current_capacity-1\
+                    WHERE locker_id = ?";
+
+        database.query(sql, [locker_id], conn).then((result: any) => {
+            if (result.affectedRows != 1) throw { code: 'updateLockerClass', err: 'Update Locker Class Error!' }
+            resolve(result)
+        })
+            .catch(err => {
+                console.log('updateLockerClass Error : ')
+                console.log(err)
+                reject(err)
+            });
+    })
+
+    updateRoomStatusBorrowing = (locker_id: string, room_id: string, conn?: any) => new Promise((resolve, reject) => {
+        let sql = "UPDATE room \
+                    SET status = 1\
+                    WHERE locker_id = ? AND room_id = ?";
+
+        database.query(sql, [locker_id, room_id], conn).then((result: any) => {
+            if (result.affectedRows != 1) throw { code: 'updateLockerClass', err: 'Update Locker Class Error!' }
+            resolve(result)
+        })
+            .catch(err => {
+                console.log('updateLockerClass Error : ')
+                console.log(err)
+                reject(err)
+            });
+    })
 }

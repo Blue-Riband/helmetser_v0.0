@@ -233,6 +233,9 @@ const Map: React.FC<any> = (props) => {
   const moveQrCode = () => {
     history.push("/qrcode");
   };
+  const moveKakaoPay = () => {
+    history.push("/pay");
+  };
 
   const handleNew = (E: any) => {
     history.push({
@@ -359,6 +362,7 @@ const Map: React.FC<any> = (props) => {
             <ul onClick={() => moveMyUse()}>이용 현황</ul>
             <ul onClick={() => moveGuide()}>이용 안내</ul>
             <ul onClick={() => moveSetting()}>설정</ul>
+            <ul onClick={() => moveKakaoPay()}>결제</ul>
           </div>
         </div>
       </Container>
