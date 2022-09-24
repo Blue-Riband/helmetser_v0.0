@@ -146,19 +146,22 @@ const Map: React.FC<any> = props => {
     })
 
     const moveMypage = () =>{
-        history.push('/MyPage')
+        history.push('/mypage')
     }
     const moveMyUse = () =>{
-        history.push('/MyUse')
+        history.push('/myuse')
     }
     const moveQnA = () =>{
-        history.push('/QnA')
+        history.push('/qna')
     }
     const moveGuide = () =>{
-        history.push('/Guide')
+        history.push('/guide')
     }
     const moveSetting = () =>{
-        history.push('/Setting')
+        history.push('/setting')
+    }
+    const moveQrCode = () =>{
+        history.push('/qrcode')
     }
 
     const handleNew = (E: any) => {
@@ -265,6 +268,7 @@ const Map: React.FC<any> = props => {
                         <ul onClick={()=>moveQnA()}>문의 게시판</ul>
                         <ul onClick={()=>moveGuide()}>이용 안내</ul>
                         <ul onClick={()=>moveSetting()}>설정</ul>
+                        <ul onClick={()=>moveQrCode()}>큐알</ul>
                     </div>
                 </div>
             </Container>
