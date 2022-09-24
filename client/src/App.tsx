@@ -24,6 +24,7 @@ import Guide from './components/Guide';
 import QnA from './components/QnA';
 import Setting from './components/Setting';
 import Locker from './components/Locker';
+import QrCode from './components/QrCode';
 
 const useStyles = makeStyles({
   snackBar: {
@@ -130,6 +131,7 @@ function App(props:any) {
                 <Route path="/qna" component={() => <QnA member={member}/>}></Route>
                 <Route path="/guide" component={() => <Guide member={member}/>}></Route>
                 <Route path="/setting" component={() => <Setting member={member}/>}></Route>
+                <Route path="/qrcode" component={() => <QrCode member={member}/>}></Route>
               </Switch>
             </BrowserRouter>
           </div>

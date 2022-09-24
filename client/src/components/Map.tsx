@@ -208,19 +208,22 @@ const Map: React.FC<any> = (props) => {
   });
 
   const moveMypage = () => {
-    history.push("/MyPage");
+    history.push("/mypage");
   };
   const moveMyUse = () => {
-    history.push("/MyUse");
+    history.push("/myuse");
   };
   const moveQnA = () => {
-    history.push("/QnA");
+    history.push("/qna");
   };
   const moveGuide = () => {
-    history.push("/Guide");
+    history.push("/guide");
   };
   const moveSetting = () => {
-    history.push("/Setting");
+    history.push("/setting");
+  };
+  const moveQrCode = () => {
+    history.push("/qrcode");
   };
 
   const handleNew = (E: any) => {
@@ -294,7 +297,6 @@ const Map: React.FC<any> = (props) => {
 
         clickable: true,
       });
-
       kakao.maps.event.addListener(marker, "click", function () {
         // 마커 위에 인포윈도우를 표시합니다
         infowindow.open(map, marker);
@@ -327,7 +329,7 @@ const Map: React.FC<any> = (props) => {
           </Button>
         </div>
         <div className={classes.qrLabel}>
-          <Button onClick={() => toggleMenu()} className={classes.qrButton}>
+          <Button onClick={() => moveQrCode()} className={classes.qrButton}>
             {true ? <span>QR스캔하기</span> : <span>반납하기</span>}
           </Button>
         </div>
