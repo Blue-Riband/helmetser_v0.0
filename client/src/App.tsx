@@ -16,8 +16,14 @@ import Login from './components/Login'
 import AuthEmail from './components/auth/Email'
 import AuthPassword from './components/auth/Password'
 import PersonalInfo from './components/auth/PersonalInfo'
-import New from './components/new'
 
+import Map from './components/Map';
+import MyPage from './components/MyPage'
+import MyUse from './components/Myuse';
+import Guide from './components/Guide';
+import QnA from './components/QnA';
+import Setting from './components/Setting';
+import Locker from './components/Locker';
 
 const useStyles = makeStyles({
   snackBar: {
@@ -74,30 +80,63 @@ function App(props:any) {
   if (!loading) {
     return <Splash />
   }
-  return (
-    <SnackbarProvider
-      maxSnack={3}
-      autoHideDuration={SNACKBAR_TIME}
-      style={{
-        fontSize: '3vw',
-      }}
-      className={classes.snackBar}
-      // action={key => <SnackbarCloseButton key={key} />}
-      action={key => SnackbarCloseButton(key)}
-    >
-        <div style={{ backgroundColor: '#ffffff' }}>
-          <BrowserRouter>
-            <Switch>
-              <Route exact path="/" component={() => <Login member={member} setMember={setMember} token={token}/>}></Route>
-              <Route path="/email" component={() => <AuthEmail member={member} setMember={setMember} />}></Route>
-              <Route path="/password" component={() => <AuthPassword member={member} setMember={setMember} />}></Route>
-              <Route path="/personalInfo" component={() => <PersonalInfo member={member} setMember={setMember} token={token}/>}></Route>
-              <Route path="/new" component={() => <New member={member}/>}></Route>
-            </Switch>
-          </BrowserRouter>
-        </div>
-    </SnackbarProvider>
-  )
+
+  if(!member){
+    return (
+      <SnackbarProvider
+        maxSnack={3}
+        autoHideDuration={SNACKBAR_TIME}
+        style={{
+          fontSize: '3vw',
+        }}
+        className={classes.snackBar}
+        // action={key => <SnackbarCloseButton key={key} />}
+        action={key => SnackbarCloseButton(key)}
+      >
+          <div style={{ backgroundColor: '#ffffff' }}>
+            <BrowserRouter>
+              <Switch>
+                <Route exact path="/" component={() => <Login member={member} setMember={setMember} token={token}/>}></Route>
+                <Route path="/email" component={() => <AuthEmail member={member} setMember={setMember} />}></Route>
+                <Route path="/password" component={() => <AuthPassword member={member} setMember={setMember} />}></Route>
+                <Route path="/personalInfo" component={() => <PersonalInfo member={member} setMember={setMember} token={token}/>}></Route>
+                
+              </Switch>
+            </BrowserRouter>
+          </div>
+      </SnackbarProvider>
+    )
+  }
+  else{
+    return (
+      <SnackbarProvider
+        maxSnack={3}
+        autoHideDuration={SNACKBAR_TIME}
+        style={{
+          fontSize: '3vw',
+        }}
+        className={classes.snackBar}
+        // action={key => <SnackbarCloseButton key={key} />}
+        action={key => SnackbarCloseButton(key)}
+      >
+          <div style={{ backgroundColor: '#ffffff' }}>
+            <BrowserRouter>
+              <Switch>
+              <Redirect exact from="/" to="/map"></Redirect>
+                <Route path="/map" component={() => <Map member={member}/>}></Route>
+                <Route path="/locker/:lockerId" component={() => <Locker member={member}/>}></Route>
+                <Route path="/mypage" component={() => <MyPage member={member}/>}></Route>
+                <Route path="/myuse" component={() => <MyUse member={member}/>}></Route>
+                <Route path="/qna" component={() => <QnA member={member}/>}></Route>
+                <Route path="/guide" component={() => <Guide member={member}/>}></Route>
+                <Route path="/setting" component={() => <Setting member={member}/>}></Route>
+              </Switch>
+            </BrowserRouter>
+          </div>
+      </SnackbarProvider>
+    )
+  }
+
 }
 
 export default App;

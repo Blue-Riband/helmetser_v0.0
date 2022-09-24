@@ -13,6 +13,7 @@ import axios from 'axios'
 import { COLORS } from '../Theme'
 
 import { useSnackbar } from 'notistack';
+import { useCookies } from "react-cookie";
 import ToastStr from '../../request/toastStr';
 import { SNACKBAR_TIME, Values } from '../../request/values'
 
@@ -78,6 +79,7 @@ const PersonalInfo: React.FC<any> = props => {
     const { email, password } = state;
 
     const { setMember, token } = props
+    const [cookies, setCookie, removeCookie] = useCookies();
     const [name, setName] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
 
@@ -130,10 +132,10 @@ const PersonalInfo: React.FC<any> = props => {
                 console.log(data)
                 if (data.code === Values.SUCCESS_CODE) {
                     setMember({ id: email, name: name })
-                    //setCookie('access', data.jwt)
+                    setCookie('access', data.jwt)
                     axios.defaults.headers.common['Authorization'] = `Bearer ${data.jwt}`;
                     history.push({
-                        pathname: '/',
+                        pathname: '/map',
                     });
                 } else {
                     if (data.code === Values.FAIL_CODE) {
@@ -207,5 +209,4 @@ const PersonalInfo: React.FC<any> = props => {
 
     );
 }
-
 export default PersonalInfo;
