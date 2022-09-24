@@ -338,6 +338,22 @@ export default class MemberDao {
         });
     })
 
+    updateMemberPoint = (member_id: string, point: number, conn?: any) => new Promise((resolve, reject) => {
+        let sql = "UPDATE member \
+                    SET point = point + ?\
+                    WHERE member_id = ?";
+
+        database.query(sql, [point, member_id], conn).then((result: any) => {
+            if (result.affectedRows != 1) throw { code: 'updateMemberPoint', err: 'Update Member Point Error!' }
+            resolve(result)
+        })
+            .catch(err => {
+                console.log('updateMemberPoint Error : ')
+                console.log(err)
+                reject(err)
+            });
+    }) 
+
     selectRoom = (lockerId: number, roomId: number, conn?:any) => new Promise((resolve, reject) => {
         let sql = "SELECT r.status, h.helmet_id, h.status as helmet_status \
                     FROM room r JOIN helmet h\

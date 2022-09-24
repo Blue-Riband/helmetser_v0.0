@@ -407,6 +407,61 @@ memberRouter.get(member.get_locker, (req, res, next) => {
     })
 })
 
+memberRouter.post(member.point, (req, res, next) =>{
+    let b_params = req.body, res_json: any = {};
+    const { member_id, point } = b_params;
+    let query: any = typeConverUtil.convert(req.query)
+    console.log(member_id, point)
+    let helmet_id;
+
+    if (query == null) {
+        res_json = setResponseData(res_json, Values.EXCEPTION_CODE, Values.EXCEPTION_MESSAGE);
+        res_json.msg = "Query Type Error!"
+        return res.json(res_json)
+    }
+
+    database.getConnection((err: any, conn: any) => {
+        if (err) {
+            res_json = setResponseData(res_json, Values.FAIL_CODE, Values.FAIL_MESSAGE);
+            res_json.msg = err;
+            res.json(res_json)
+        } else {
+            conn.beginTransaction((err) => {
+                memberDao.updateMemberPoint(member_id, point, conn).then((result: any) => {
+                    res_json = setResponseData(res_json, Values.SUCCESS_CODE, Values.SUCCESS_MESSAGE)
+                }).catch(err => {
+                    if (err.hasOwnProperty('code')) {
+                        res_json = setResponseData(res_json, Values.FAIL_CODE, Values.FAIL_MESSAGE)
+                        if (err.code == Values.FAIL_CODE) {
+                            res_json.msg = "There is no Member to Delete"
+                        } else {
+                            res_json.msg = err.msg
+                        }
+                    } else {
+                        res_json = setResponseData(res_json, Values.EXCEPTION_CODE, Values.EXCEPTION_MESSAGE);
+                        res_json.err = err
+                    }
+                    conn.rollback();
+                }).then(() => {
+                    conn.commit((err) => {
+                        if (err) {
+                            conn.rollback(() => {
+                                conn.release();
+                            })
+                            res_json = setResponseData(res_json, Values.FAIL_CODE, Values.FAIL_MESSAGE);
+                            res_json.msg = err;
+                        } else {
+                            conn.release();
+                        }
+                    })
+                })
+                    .then(() => {
+                        res.json(res_json)
+                    })
+            })
+        }
+    })
+})
 
 memberRouter.post(member.borrow_helmet, (req, res, next) =>{
     let b_params = req.body, res_json: any = {};

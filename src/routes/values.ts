@@ -29,6 +29,7 @@ const TOKEN = '/token'
 const INFO = '/info'
 const LOCKER = '/locker'
 const HELMET = '/helmet'
+const POINT = '/point'
 
 const DISPLAYIMAGE = '/displayImage'
 const DISPLAYFILE = '/displayFile'
@@ -62,6 +63,7 @@ export const member = {
     login : LOGIN,
     logout : LOGOUT,
     delete :  DELETE,
+    point: POINT,
 
     pwd_upd : PWD + UPD,
     token_upd : TOKEN + UPD,

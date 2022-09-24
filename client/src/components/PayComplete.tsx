@@ -58,7 +58,7 @@ const PayComplete: React.FC<any> = props =>  {
             point: window.localStorage.getItem("money"),
           },
           withCredentials: true,
-          url: SERVER + v_member.member + v_member.login,
+          url: SERVER + v_member.member + v_member.point,
     
           headers: { "Access-Control-Allow-Origin": basic.server_url, mode: 'cors', "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept" }
         })
@@ -69,9 +69,8 @@ const PayComplete: React.FC<any> = props =>  {
           }).then((data: any) => {
             // console.log('data?', data)
             if (data.code === Values.SUCCESS_CODE) {
-              
+                history.push('/map')
             } else {
-                enqueueSnackbar(ToastStr.LOGIN_FAIL, { variant: "error", autoHideDuration: SNACKBAR_TIME })
               // window.postMessage(data.member.id, '*'
             }
           }).catch((error: any) => {
