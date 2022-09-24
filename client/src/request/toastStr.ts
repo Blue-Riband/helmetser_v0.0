@@ -30,6 +30,7 @@ const ToastStr = {
     LOGOUT_FAIL_STR : "로그아웃을 할 수 없습니다.",
     DELETE_ACCOUNT_MESSAGE_FAIL_STR : "입력한 내용을 다시 한 번 확인해주세요.",
     DELETE_ACCOUNT_FAIL_STR : "입력한 내용을 다시 한 번 확인해주세요.",
+    BORROW_SUCCESS : "헬멧 빌리기 성공!!",
 
     REQUEST_GET_POST_FAIL_STR : "요청에 실패했습니다.\n다시 시도해 주세요."
 }

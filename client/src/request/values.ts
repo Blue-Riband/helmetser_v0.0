@@ -24,6 +24,7 @@ const JOIN = '/join'
 const LOGIN = '/login'
 const LOGOUT = '/logout'
 const GET = '/get'
+const BORROW = '/borrow'
 
 
 // object
@@ -32,6 +33,7 @@ const PWD = '/pwd'
 const TOKEN = '/token'
 const INFO = '/info'
 const LOCKER = '/locker'
+const HELMET = '/helmet'
 
 const DISPLAYIMAGE = '/displayImage'
 const DISPLAYFILE = '/displayFile'
@@ -72,6 +74,7 @@ export const member = {
     pwd_upd : PWD + UPD,
     token_upd : TOKEN + UPD,
     get_locker: GET + LOCKER,
+    borrow_helmet: BORROW + HELMET, 
 }
 
 export const util = {

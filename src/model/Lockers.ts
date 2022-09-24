@@ -4,6 +4,7 @@ export default class Locker {
     private lockerId!: number;
     private totalCapacity! : number;
     private currentCapacity! : number;
+    private repairCapacity! : number;
     private locationX! : number;
     private locationY! : number;
 
@@ -26,6 +27,15 @@ export default class Locker {
 
     public setTotalCapacity(totalCapacity: number): Locker{
         this.totalCapacity = totalCapacity;
+        return this;
+    }
+
+    public getRepairCapacity(): number{
+        return this.repairCapacity;
+    }
+
+    public setReapairCapacity(repairCapacity: number): Locker{
+        this.repairCapacity = repairCapacity;
         return this;
     }
 

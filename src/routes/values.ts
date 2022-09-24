@@ -19,6 +19,7 @@ const JOIN = '/join'
 const LOGIN = '/login'
 const LOGOUT = '/logout'
 const GET = '/get'
+const BORROW = '/borrow'
 
 
 // object
@@ -27,6 +28,7 @@ const PWD = '/pwd'
 const TOKEN = '/token'
 const INFO = '/info'
 const LOCKER = '/locker'
+const HELMET = '/helmet'
 
 const DISPLAYIMAGE = '/displayImage'
 const DISPLAYFILE = '/displayFile'
@@ -64,6 +66,7 @@ export const member = {
     pwd_upd : PWD + UPD,
     token_upd : TOKEN + UPD,
     get_locker: GET + LOCKER,
+    borrow_helmet: BORROW + HELMET, 
 }
 
 export const util = {
@@ -92,6 +95,7 @@ export const Values = {
 	FAIL_MESSAGE : "fail",
 	EXCEPTION_CODE : "9500",
     EXCEPTION_MESSAGE : "exception",
+    HELMET_CANNOT_BORROW : "7777",
 	
 	FIREBASE_SERVER_KEY : "c5623cb20e3e72b1f77d30c09c27c05df9c0b06498b2775e1bb20e71fed18627399b345670c7516c",
 	FIREBASE_API_URL : "https://fcm.googleapis.com/fcm/send",
