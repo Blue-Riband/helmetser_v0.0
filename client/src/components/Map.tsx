@@ -162,6 +162,7 @@ const Map: React.FC<any> = (props) => {
   const [xPosition, setX] = useState(width);
   const [lockers, setLockers] = useState<iLocker[]>([]);
   const [status, setStatus] = useState(1);
+  const [move, setMove] = useState(0);
   const side = useRef<HTMLElement>(null);
   const { member } = props;
 
@@ -283,59 +284,61 @@ const Map: React.FC<any> = (props) => {
     });
   };
 
-  const { enqueueSnackbar } = useSnackbar();
-  const mapScript = document.createElement("script");
-  mapScript.async = true;
-  mapScript.src =
-    "//dapi.kakao.com/v2/maps/sdk.js?appkey=09a2bf6aef7641e6ca9ed7991df1bf89&autoload=false&Libraries=services,clusterer,drawing";
-  const imageSrc =
+
+    const { enqueueSnackbar } = useSnackbar();
+    const mapScript = document.createElement("script");
+    mapScript.async = true;
+    mapScript.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?appkey=09a2bf6aef7641e6ca9ed7991df1bf89&autoload=false&Libraries=services,clusterer,drawing";
+    const imageSrc =
     "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 
-  useEffect(() => {
+
+    useEffect(() => {
     getLocker();
     getMemberStatus();
-  }, []);
-  useEffect(() => {
+    }, []);
+    useEffect(() => {
     const imageSrc =
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png", // 마커이미지의 주소입니다
-      imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
-      imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+        imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+        imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
     const markerImage = new kakao.maps.MarkerImage(
-      imageSrc,
-      imageSize,
-      imageOption
+        imageSrc,
+        imageSize,
+        imageOption
     );
-
-    const container = document.getElementById("myMap");
     let options = {
-      center: new kakao.maps.LatLng(35.8881679003687, 128.61134827189184),
-      level: 4,
+        center: new kakao.maps.LatLng(35.8881679003687, 128.61134827189184),
+        level: 4,
     };
+    const container = document.getElementById("myMap");
     const map = new kakao.maps.Map(container, options);
+
     if (navigator.geolocation) {
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function (position) {
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(function (position) {
         const lat = position.coords.latitude; // 위도
         const lon = position.coords.longitude; // 경도
         let locPosition = new kakao.maps.LatLng(lat, lon);
         map.panTo(locPosition);
-      });
+        });
     } else {
     }
     // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
     const iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-      iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+        iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
     // 인포윈도우를 생성합니다
     const infowindow = new kakao.maps.InfoWindow({
-      content: iwContent,
-      removable: iwRemoveable,
+        content: iwContent,
+        removable: iwRemoveable,
     });
 
     lockers.forEach((el, index) => {
-      // 마커를 생성합니다
-      const marker = new kakao.maps.Marker({
+        // 마커를 생성합니다
+        const marker = new kakao.maps.Marker({
         //마커가 표시 될 지도
         map: map,
         //마커가 표시 될 위치
@@ -345,15 +348,19 @@ const Map: React.FC<any> = (props) => {
         image: markerImage,
 
         clickable: true,
-      });
-      kakao.maps.event.addListener(marker, "click", function () {
+        });
+        kakao.maps.event.addListener(marker, "click", function () {
         // 마커 위에 인포윈도우를 표시합니다
         infowindow.open(map, marker);
         // handleNew(index);
-      });
+        });
     });
     //getLocker()
-  }, [lockers]);
+    }, [lockers, move]);
+
+  const addMove = () =>{
+    setMove(move + 1)
+  }
 
   return (
     <div
@@ -375,7 +382,7 @@ const Map: React.FC<any> = (props) => {
           <div></div>
           <div></div>
           <div></div>
-          <Button onClick={() => toggleMenu()} className={classes.gpsLabel}>
+          <Button onClick={() => addMove()} className={classes.gpsLabel}>
             <img className={classes.gpsButton} src="/images/gps.png"></img>
           </Button>
         </div>

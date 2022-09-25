@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useSnackbar } from 'notistack';
 import ToastStr from '../request/toastStr';
 import axios from "axios";
+import { useCookies } from "react-cookie";import { COLORS } from "./Theme";
 
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -14,23 +15,22 @@ const useStyles = makeStyles((theme) => ({
     nanumSquare_regular: {
         fontFamily: 'NanumR',
     },
-    back : {
-        marginLeft : '-1vh',
+    logo :{
+        fontSize: '10vw',
+        fontWeight: 'bolder',
+        color: `${COLORS.HELMETSER}`,
+        margin: '10vh 0'
     },
     container: {
-        width: '82%',
-        marginTop: '7vh',
-        padding: 0,
+        backgroundColor: 'white',
+        width: '100vw',
+        marginTop: '15vh',
+        textAlign: 'center',
     },
-    paper: {
-        // marginTop: theme.spacing(8),
-        // width: '82%',
-        margin: 'auto',
-        marginTop: '6vh',
-        display: 'flex',
-        flexDirection: 'column',
+    memberInfo: {
+        fontSize: '5vw',
+        margin: '3vh 0',
     },
-
 }));
 
 type iMember = {
@@ -74,10 +74,21 @@ const MyPage: React.FC<any> = props => {
     useEffect(()=>{
         getMember()
     },[])
+    /*
 
+            <Typography className = {classes.memberInfo}>아이디: {memberInfo[0].memberId}</Typography>
+            <Typography className = {classes.memberInfo}>이름: {memberInfo[0].name}</Typography>
+            <Typography className = {classes.memberInfo}>포인트: {memberInfo[0].point}</Typography>
+            <Typography className = {classes.memberInfo}>등급 점수: {memberInfo[0].membershipCode}</Typography>
+            <Typography className = {classes.memberInfo}>가입 날짜: {memberInfo[0].regDate}</Typography>
+    */
     return (
-        <div>MyPage</div>
-    )
-}
+        <div className = {classes.container}>
+            <Typography className = {classes.logo}>HELMETSER</Typography>
+
+
+        </div>
+    );
+};
 
 export default MyPage;
