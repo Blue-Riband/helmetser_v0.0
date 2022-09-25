@@ -338,7 +338,6 @@ export default class MemberDao {
         });
     })
 
-<<<<<<< Updated upstream
     updateMemberPoint = (member_id: string, point: number, conn?: any) => new Promise((resolve, reject) => {
         let sql = "UPDATE member \
                     SET point = point + ?\
@@ -354,7 +353,7 @@ export default class MemberDao {
                 reject(err)
             });
     }) 
-=======
+    
     selectCheckRoom = (lockerId: number, roomId: number, conn?:any) => new Promise((resolve, reject) => {
         let sql = "SELECT r.status\
                     FROM room r\
@@ -367,7 +366,6 @@ export default class MemberDao {
             }
         )
     })
->>>>>>> Stashed changes
 
     selectRoom = (lockerId: number, roomId: number, conn?:any) => new Promise((resolve, reject) => {
         let sql = "SELECT r.status, h.helmet_id, h.status as helmet_status \
