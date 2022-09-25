@@ -590,4 +590,18 @@ export default class MemberDao {
             }
         )
     })
+
+    selectMemberRecord = (memberId: string, conn?:any) => new Promise((resolve, reject) => {
+        let sql = "SELECT member_id, helmet_id, start_locker, start_room, start_date, end_locker, end_room, end_date, status\
+                    FROM rent_sheet\
+                    WHERE member_id = ?\
+                    ORDER BY start_date DESC"
+
+
+        database.query(sql, [memberId], conn).then(
+            (result: any) => {
+                resolve(result)
+            }
+        )
+    })
 }

@@ -39,6 +39,7 @@ const LOCKER = '/locker'
 const HELMET = '/helmet'
 const POINT = '/point'
 const STATUS = '/status'
+const RECORD = '/record'
 
 const DISPLAYIMAGE = '/displayImage'
 const DISPLAYFILE = '/displayFile'
@@ -84,6 +85,7 @@ export const member = {
     borrow_helmet: BORROW + HELMET, 
     restore_helmet: RESTORE + HELMET,
     get_member: GET + MEMBER,
+    get_record: GET + RECORD,
 }
 
 export const util = {
