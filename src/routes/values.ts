@@ -7,7 +7,7 @@ import Room from "src/model/Room";
 const VERSION = '/v0';
 
 
-export const CLIENT = 'http://3.34.130.97:3000'
+export const CLIENT = 'http://3.39.6.138:3000'
 export const CLIENT_DEV = 'http://localhost:3000'
 
 const MAIN = '/main'
