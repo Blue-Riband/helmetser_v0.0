@@ -18,6 +18,8 @@ const SERVER = basic.server;
 
 const QrCode: React.FC<any> = props =>  {
   let history = useHistory()
+  const state: any = history.location.state
+  const status = state.status;
   const {member} = props
   const [room, setLockers] = useState<iRoom[]>([])
   const { enqueueSnackbar } = useSnackbar();
@@ -121,9 +123,10 @@ const QrCode: React.FC<any> = props =>  {
 
   useEffect(()=>{
     if(result != ""){
-      //restoreHandler()
-      submitHandler()
-      //history.push('/map')
+      if(status)
+        restoreHandler()
+      else
+        submitHandler()
     }
   },[result])
 
@@ -132,6 +135,7 @@ const QrCode: React.FC<any> = props =>  {
       <QrReader
         delay={delay}
         style={previewStyle}
+
         onError={handleError}
         onScan={handleScan}
       />

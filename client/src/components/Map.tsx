@@ -88,6 +88,7 @@ const Map: React.FC<any> = props => {
     const [isOpen, setOpen] = useState(false);
     const [xPosition, setX] = useState(width);
     const [lockers, setLockers] = useState<iLocker[]>([])
+    const [status, setStatus] = useState(1)
     const side = useRef<HTMLElement>(null);
     const { member } = props;
     
@@ -120,6 +121,30 @@ const Map: React.FC<any> = props => {
             if (data.code === Values.SUCCESS_CODE) {
                 //enqueueSnackbar(ToastStr.JOIN_FAIL_STR, { variant: "warning", autoHideDuration: SNACKBAR_TIME })
                 setLockers(data.lockers)
+            } else if (data.code === Values.FAIL_CODE) {
+                // this is success == dont exist same id
+                //enqueueSnackbar(ToastStr.EMAIL_AUTH_SUCCESS_STR, { variant: "success", autoHideDuration: SNACKBAR_TIME * 2 })
+                //setLockers(data.lockers);
+            }
+        })
+    }
+
+    const getMemberStatus = () => {
+        let url = new URL(SERVER + v_member.member + v_member.get_status);
+        let params = {'member_id': member.id}
+        url.search = new URLSearchParams(params).toString();
+
+        axios({
+            method: 'GET',
+            withCredentials: true,
+            url: url.toString(),
+        }).then((res) => {
+            return res.data
+        }).then((data: any) => {
+            console.log(data);
+            if (data.code === Values.SUCCESS_CODE) {
+                //enqueueSnackbar(ToastStr.JOIN_FAIL_STR, { variant: "warning", autoHideDuration: SNACKBAR_TIME })
+                setStatus(data.status)
             } else if (data.code === Values.FAIL_CODE) {
                 // this is success == dont exist same id
                 //enqueueSnackbar(ToastStr.EMAIL_AUTH_SUCCESS_STR, { variant: "success", autoHideDuration: SNACKBAR_TIME * 2 })
@@ -161,7 +186,12 @@ const Map: React.FC<any> = props => {
         history.push('/setting')
     }
     const moveQrCode = () =>{
-        history.push('/qrcode')
+        history.push({
+            pathname: '/qrcode',
+            state: {
+                status: status
+            }
+    })
     }
     const moveKakaoPay = () =>{
         history.push('/pay')
@@ -185,6 +215,7 @@ const Map: React.FC<any> = props => {
 
     useEffect(()=>{
         getLocker()
+        getMemberStatus()
     },[])
     useEffect(() => {
 
@@ -246,7 +277,6 @@ const Map: React.FC<any> = props => {
         
     }, [lockers]);
 
-
     return (
         <div id='myMap' style={{
             width: '100vw', 
@@ -270,10 +300,9 @@ const Map: React.FC<any> = props => {
                         <ul onClick={()=>moveMyUse()}>이용 현황</ul>
                         <ul onClick={()=>moveQnA()}>문의 게시판</ul>
                         <ul onClick={()=>moveGuide()}>이용 안내</ul>
-                        <ul onClick={()=>moveSetting()}>설정</ul>
-                        <ul onClick={()=>moveQrCode()}>큐알</ul>
                         <ul onClick={()=>moveKakaoPay()}>결제</ul>
-                        
+                        {status ? <ul onClick={()=>moveQrCode()}> 반납하기 </ul> : <ul onClick={()=>moveQrCode()}> 대여하기 </ul>}
+                        <ul onClick={()=>moveSetting()}>설정</ul>
                     </div>
                 </div>
             </Container>

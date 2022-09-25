@@ -1,3 +1,5 @@
+import { STATUS_CODES } from "http";
+
 // Global
 export const SPLASH_TIME = process.env.NODE_ENV === 'production' ? 2000 : 2000;
 export const SNACKBAR_TIME = process.env.NODE_ENV === 'production' ? 5000 : 2000;
@@ -36,6 +38,7 @@ const INFO = '/info'
 const LOCKER = '/locker'
 const HELMET = '/helmet'
 const POINT = '/point'
+const STATUS = '/status'
 
 const DISPLAYIMAGE = '/displayImage'
 const DISPLAYFILE = '/displayFile'
@@ -73,6 +76,7 @@ export const member = {
     logout : LOGOUT,
     delete :  DELETE,
     point : POINT,
+    get_status: GET + STATUS,
 
     pwd_upd : PWD + UPD,
     token_upd : TOKEN + UPD,

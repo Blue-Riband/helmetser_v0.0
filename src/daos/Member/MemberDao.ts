@@ -338,6 +338,18 @@ export default class MemberDao {
         });
     })
 
+    selectMemberStatus = (member_id: string, conn?:any) => new Promise((resolve, reject) => {
+        let sql = "SELECT status \
+                    FROM member\
+                    WHERE member_id = ?"
+
+        database.query(sql, [member_id], conn).then(
+            (result: any) => {
+                resolve(result)
+            }
+        )
+    })
+
     updateMemberPoint = (member_id: string, point: number, conn?: any) => new Promise((resolve, reject) => {
         let sql = "UPDATE member \
                     SET point = point + ?\
