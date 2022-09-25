@@ -611,7 +611,8 @@ memberRouter.post(member.restore_helmet, (req, res, next) =>{
                     return memberDao.selectHelmetId(member_id)
                 }).then((result: any)=>{
                     result = camelcaseKeysDeep(result)
-                    helmet_id = result[0].helmet_id
+                    console.log(result[0].helmetId)
+                    helmet_id = result[0].helmetId
                 }).then(() => {
                     return memberDao.updateRentSheet(member_id, locker_id, room_id) 
                 }).then(()=>{
