@@ -6,9 +6,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useSnackbar } from 'notistack';
 import ToastStr from '../request/toastStr';
-
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { COLORS } from "./Theme";
+import { textAlign } from "@material-ui/system";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -18,13 +17,60 @@ const useStyles = makeStyles((theme) => ({
     back : {
         marginLeft : '-1vh',
     },
+    logo :{
+        fontSize: '10vw',
+        fontWeight: 'bolder',
+        color: `${COLORS.HELMETSER}`,
+        margin: '5vh 0',
+        textAlign: 'center',
+    },
+    logo2 :{
+        fontSize: '5vw',
+        color: `${COLORS.HELMETSER}`,
+        textAlign: 'center',
+    },
+    sul :{
+        fontSize: '3vw',
+        color: `${COLORS.HELMETSER}`,
+        textAlign: 'right',
+        marginRight: '10px',
+    },
     locker: {
-        display: 'flex',
-        flexDirection: 'row',
+        display: 'grid',
+        width: '100vw',
+        height: '30vh',
+        gridTemplateColumns: '1fr 1fr 1fr',
+        //flexDirection: 'row',
     },
     room0:{
-        
-
+        width: '30vw',
+        backgroundColor: 'green',
+        opacity: '0.5',
+        textAlign: 'center',
+        lineHeight: '30vh',
+        justifyContent: 'center',
+        margin:'10px',
+        borderRadius: '15px',
+    },
+    room1:{
+        width: '30vw',
+        backgroundColor: 'red',
+        opacity: '0.5',
+        textAlign: 'center',
+        lineHeight: '30vh',
+        justifyContent: 'center',
+        margin:'10px',
+        borderRadius: '15px',
+    },
+    room2:{
+        width: '30vw',
+        backgroundColor: 'orange',
+        opacity: '0.5',
+        textAlign: 'center',
+        lineHeight: '30vh',
+        justifyContent: 'center',
+        margin:'10px',
+        borderRadius: '15px',
     },
     paper: {
         // marginTop: theme.spacing(8),
@@ -83,6 +129,9 @@ const Locker: React.FC<any> = props => {
 
     return (
         <div>
+            <Typography className = {classes.logo}>HELMETSER</Typography>
+            <Typography className = {classes.logo2}>{state.locker_id}번 락커입니다!</Typography>
+            <Typography className ={classes.sul}>* 초록: 사용가능 빨강: 사용중 주황: 고장입니다! </Typography>
             <Table className={classes.locker}>
                 {room != null && room.map((item: any, index:number) =>{
                     return <AppListItem index={index} roomId = {item.roomId} status = {item.status}/>
@@ -103,16 +152,15 @@ const AppListItem: React.FC<any> = props =>{
     }
     else if(status == 1){
         return (
-            <div>
-
-                
+            <div className={classes.room1}>
+                {roomId}
             </div>
         )
     }
     else{
         return(
-            <div>
-
+            <div className={classes.room2}>
+                {roomId}
             </div>
         )
     }
