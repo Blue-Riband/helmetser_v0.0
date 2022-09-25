@@ -46,3 +46,4 @@ hackathon2022
 - 카카오 api를 사용해 gps 서비스 제공
 <br><br><br>
 # 시연 영상
+[유튜브 시연 영상](https://youtu.be/zf0E7f7h1og)
