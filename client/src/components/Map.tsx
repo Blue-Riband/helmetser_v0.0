@@ -161,6 +161,7 @@ const Map: React.FC<any> = (props) => {
   const [isOpen, setOpen] = useState(false);
   const [xPosition, setX] = useState(width);
   const [lockers, setLockers] = useState<iLocker[]>([]);
+  const [status, setStatus] = useState(1);
   const side = useRef<HTMLElement>(null);
   const { member } = props;
 
@@ -174,6 +175,8 @@ const Map: React.FC<any> = (props) => {
       setOpen(false);
     }
   };
+
+  // 사이드바 외부 클릭시 닫히는 함수
 
   const getLocker = () => {
     let url = new URL(SERVER + v_member.member + v_member.get_locker);
@@ -201,7 +204,32 @@ const Map: React.FC<any> = (props) => {
       });
   };
 
-  // 사이드바 외부 클릭시 닫히는 함수
+  const getMemberStatus = () => {
+    let url = new URL(SERVER + v_member.member + v_member.get_status);
+    let params = { member_id: member.id };
+    url.search = new URLSearchParams(params).toString();
+
+    axios({
+      method: "GET",
+      withCredentials: true,
+      url: url.toString(),
+    })
+      .then((res) => {
+        return res.data;
+      })
+      .then((data: any) => {
+        console.log(data);
+        if (data.code === Values.SUCCESS_CODE) {
+          //enqueueSnackbar(ToastStr.JOIN_FAIL_STR, { variant: "warning", autoHideDuration: SNACKBAR_TIME })
+          setStatus(data.status);
+        } else if (data.code === Values.FAIL_CODE) {
+          // this is success == dont exist same id
+          //enqueueSnackbar(ToastStr.EMAIL_AUTH_SUCCESS_STR, { variant: "success", autoHideDuration: SNACKBAR_TIME * 2 })
+          //setLockers(data.lockers);
+        }
+      });
+  };
+
   const onClickOutside = (event: Event) => {
     let sideArea = side.current;
     let sideChildren = side.current?.contains(event.target as Node);
@@ -225,6 +253,9 @@ const Map: React.FC<any> = (props) => {
   const moveMyUse = () => {
     history.push("/myuse");
   };
+  const moveQnA = () => {
+    history.push("/qna");
+  };
   const moveGuide = () => {
     history.push("/guide");
   };
@@ -232,7 +263,12 @@ const Map: React.FC<any> = (props) => {
     history.push("/setting");
   };
   const moveQrCode = () => {
-    history.push("/qrcode");
+    history.push({
+      pathname: "/qrcode",
+      state: {
+        status: status,
+      },
+    });
   };
   const moveKakaoPay = () => {
     history.push("/pay");
@@ -257,6 +293,7 @@ const Map: React.FC<any> = (props) => {
 
   useEffect(() => {
     getLocker();
+    getMemberStatus();
   }, []);
   useEffect(() => {
     const imageSrc =
@@ -344,7 +381,7 @@ const Map: React.FC<any> = (props) => {
         </div>
         <div className={classes.qrLabel}>
           <Button onClick={() => moveQrCode()} className={classes.qrButton}>
-            {true ? <span>QR스캔하기</span> : <span>반납하기</span>}
+            {status ? <span>QR스캔하기</span> : <span>반납하기</span>}
           </Button>
         </div>
         <div></div>

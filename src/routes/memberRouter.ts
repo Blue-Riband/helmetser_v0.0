@@ -392,13 +392,37 @@ memberRouter.get(member.get_locker, (req, res, next) => {
         res_json.msg = "Query Type Error!"
         return res.json(res_json)
     }
-
     memberDao.selectLocker().then((result: any) => {
         result = camelcaseKeysDeep(result)
         return plainToClass(Lockers, result)
     }).then((locker: any)=>{
         res_json = setResponseData(res_json, Values.SUCCESS_CODE, Values.SUCCESS_MESSAGE)
         res_json.lockers = locker;
+    }).catch(err => {
+        res_json = setResponseData(res_json, Values.EXCEPTION_CODE, Values.EXCEPTION_MESSAGE);
+        res_json.err = err;
+    }).then(() => {
+        res.json(res_json)
+    })
+})
+
+memberRouter.get(member.get_status, (req, res, next) => {
+    let res_json: any = {};
+    let query: any = typeConverUtil.convert(req.query)
+
+    if (query == null) {
+        res_json = setResponseData(res_json, Values.EXCEPTION_CODE, Values.EXCEPTION_MESSAGE);
+        res_json.msg = "Query Type Error!"
+        return res.json(res_json)
+    }
+
+    console.log(query.member_id)
+    memberDao.selectMemberStatus(query.member_id).then((result: any) => {
+        result = camelcaseKeysDeep(result)
+        return result[0].status
+    }).then((status: any)=>{
+        res_json = setResponseData(res_json, Values.SUCCESS_CODE, Values.SUCCESS_MESSAGE)
+        res_json.status = status;
     }).catch(err => {
         res_json = setResponseData(res_json, Values.EXCEPTION_CODE, Values.EXCEPTION_MESSAGE);
         res_json.err = err;
@@ -484,6 +508,8 @@ memberRouter.post(member.borrow_helmet, (req, res, next) =>{
         } else {
             conn.beginTransaction((err) => {
                 memberDao.selectRoom(locker_id, room_id, conn).then((result: any) => {
+                    if(result == [] || result[0] == undefined)
+                        throw {code: Values.HELMET_CANNOT_BORROW}
                     result = camelcaseKeysDeep(result)
                     console.log(result[0].status)
                     if ((result[0].status != 0) && (result[0].helmet_status != 0)) {
@@ -585,7 +611,8 @@ memberRouter.post(member.restore_helmet, (req, res, next) =>{
                     return memberDao.selectHelmetId(member_id)
                 }).then((result: any)=>{
                     result = camelcaseKeysDeep(result)
-                    helmet_id = result[0].helmet_id
+                    console.log(result[0].helmetId)
+                    helmet_id = result[0].helmetId
                 }).then(() => {
                     return memberDao.updateRentSheet(member_id, locker_id, room_id) 
                 }).then(()=>{

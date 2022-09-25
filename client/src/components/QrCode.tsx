@@ -23,9 +23,11 @@ const SERVER = basic.server;
 
 const QrCode: React.FC<any> = (props) => {
   let history = useHistory();
+  const state: any = history.location.state;
+  const status = state.status;
   const { member } = props;
-  const [room, setLockers] = useState<iRoom[]>([]);
   const [rentDialog, setRentDialog] = useState<boolean | number>(false);
+  const [room, setLockers] = useState<iRoom[]>([]);
   const { enqueueSnackbar } = useSnackbar();
   const delay = 500;
 
