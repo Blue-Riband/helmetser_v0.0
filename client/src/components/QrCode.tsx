@@ -121,8 +121,8 @@ const QrCode: React.FC<any> = props =>  {
 
   useEffect(()=>{
     if(result != ""){
-      //restoreHandler()
-      submitHandler()
+      restoreHandler()
+      //submitHandler()
       //history.push('/map')
     }
   },[result])
