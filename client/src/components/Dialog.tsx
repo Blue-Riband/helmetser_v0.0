@@ -124,7 +124,8 @@ const DialogRent: React.FC<any> = (props) => {
           <Button
             style={{
               fontSize: "3vw",
-              border: "1px grey solid",
+              border: "none",
+              boxShadow: "2px 2px 10px grey",
               borderRadius: "10px",
             }}
             onClick={props.noConfirm}

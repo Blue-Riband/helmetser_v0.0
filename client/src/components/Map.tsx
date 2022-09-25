@@ -381,7 +381,7 @@ const Map: React.FC<any> = (props) => {
         </div>
         <div className={classes.qrLabel}>
           <Button onClick={() => moveQrCode()} className={classes.qrButton}>
-            {status ? <span>QR스캔하기</span> : <span>반납하기</span>}
+            {!status ? <span>QR스캔하기</span> : <span>반납하기</span>}
           </Button>
         </div>
         <div></div>

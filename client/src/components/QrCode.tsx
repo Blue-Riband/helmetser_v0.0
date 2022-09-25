@@ -85,6 +85,7 @@ const QrCode: React.FC<any> = (props) => {
             variant: "success",
             autoHideDuration: SNACKBAR_TIME,
           });
+          history.push('/map')
         } else if (data.code === Values.MONEY_NOT_ENOUGH) {
           enqueueSnackbar(ToastStr.MONEY_NOT_ENOUGH, {
             variant: "warning",
@@ -138,6 +139,7 @@ const QrCode: React.FC<any> = (props) => {
             variant: "success",
             autoHideDuration: SNACKBAR_TIME,
           });
+          history.push('/map')
         } else if (data.code === Values.HELMET_CANNOT_RESTORE) {
           enqueueSnackbar(ToastStr.ROOM_FULL, {
             variant: "warning",
@@ -170,29 +172,43 @@ const QrCode: React.FC<any> = (props) => {
     if (result != "") {
       handleOpen(parseInt(result[0]));
       // submitHandler();
-      //history.push('/map')
+      if(status)
+        restoreHandler()
     }
   }, [result]);
-
-  return (
-    <>
-      <QrReader
-        delay={delay}
-        style={previewStyle}
-        onError={handleError}
-        onScan={handleScan}
-      />
-      <p>{result}</p>
-      <DialogRent
-        open={rentDialog === false ? false : true}
-        handleClose={() => handleClose()}
-        title={"헬멧의 상태를 확인해주세요."}
-        memberName={rentDialog === false ? "" : member.name}
-        yesConfirm={refusal}
-        noConfirm={() => handleClose()}
-      />
-    </>
-  );
+  if(!status){
+    return (
+      <>
+        <QrReader
+          delay={delay}
+          style={previewStyle}
+          onError={handleError}
+          onScan={handleScan}
+        />
+        <p>{result}</p>
+        <DialogRent
+          open={rentDialog === false ? false : true}
+          handleClose={() => handleClose()}
+          title={"헬멧의 상태를 확인해주세요."}
+          memberName={rentDialog === false ? "" : member.name}
+          yesConfirm={submitHandler}
+          noConfirm={() => handleClose()}
+        />
+      </>
+    );
+  }
+  else{
+    return (
+      <>
+        <QrReader
+          delay={delay}
+          style={previewStyle}
+          onError={handleError}
+          onScan={handleScan}
+        />
+      </>
+    );
+  }
 };
 
 export default QrCode;

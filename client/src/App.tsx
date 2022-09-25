@@ -166,7 +166,7 @@ function App(props: any) {
               ></Route>
               <Route
                 path="/setting"
-                component={() => <Setting member={member} />}
+                component={() => <Setting member={member} deleteMember={deleteMember} />}
               ></Route>
               <Route
                 path="/qrcode"
