@@ -11,6 +11,7 @@ import {
 } from "../request/values";
 import ToastStr from "../request/toastStr";
 import { useSnackbar } from "notistack";
+import DialogRent from "./Dialog";
 
 type iRoom = {
   lockerId: number;
@@ -24,6 +25,7 @@ const QrCode: React.FC<any> = (props) => {
   let history = useHistory();
   const { member } = props;
   const [room, setLockers] = useState<iRoom[]>([]);
+  const [declineDialog, setDeclineDialog] = useState<boolean | number>(false);
   const { enqueueSnackbar } = useSnackbar();
   const delay = 500;
 
@@ -43,6 +45,17 @@ const QrCode: React.FC<any> = (props) => {
 
   const handleError = (error: any) => {
     console.log(error);
+  };
+
+  const handleClose = (key: string) => {
+    setDeclineDialog((prevState) => false);
+  };
+
+  const handleOpen = (index: number) => {
+    console.log("open", index);
+    if (declineDialog === false) {
+      setDeclineDialog((prevState) => index);
+    }
   };
 
   const submitHandler = () => {
@@ -88,9 +101,15 @@ const QrCode: React.FC<any> = (props) => {
       });
   };
 
+  const refusal = () => {
+    // postCompanyAppDelete();
+    handleClose("declineDialog");
+  };
+
   useEffect(() => {
     if (result != "") {
-      submitHandler();
+      handleOpen(parseInt(result[0]));
+      // submitHandler();
       //history.push('/map')
     }
   }, [result]);
@@ -104,6 +123,14 @@ const QrCode: React.FC<any> = (props) => {
         onScan={handleScan}
       />
       <p>{result}</p>
+      <DialogRent
+        open={declineDialog === false ? false : true}
+        handleClose={() => handleClose("declineDialog")}
+        title={"헬멧의 상태를 확인해주세요."}
+        memberName={declineDialog === false ? "" : member.name}
+        yesConfirm={refusal}
+        noConfirm={() => handleClose("declineDialog")}
+      />
     </>
   );
 };
