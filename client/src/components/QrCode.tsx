@@ -66,6 +66,7 @@ const QrCode: React.FC<any> = props =>  {
         // console.log('data?', data)
         if(data.code === Values.SUCCESS_CODE){
           enqueueSnackbar(ToastStr.BORROW_SUCCESS, { variant: "success", autoHideDuration: SNACKBAR_TIME })
+          history.push('/map')
         }
         else if(data.code === Values.MONEY_NOT_ENOUGH){
           enqueueSnackbar(ToastStr.MONEY_NOT_ENOUGH, { variant: "warning", autoHideDuration: SNACKBAR_TIME })
@@ -106,6 +107,7 @@ const QrCode: React.FC<any> = props =>  {
         // console.log('data?', data)
         if(data.code === Values.SUCCESS_CODE){
           enqueueSnackbar(ToastStr.RESTORE_SUCCESS, { variant: "success", autoHideDuration: SNACKBAR_TIME })
+          history.push('/map')
         }
         else if(data.code === Values.HELMET_CANNOT_RESTORE){
           enqueueSnackbar(ToastStr.ROOM_FULL, { variant: "warning", autoHideDuration: SNACKBAR_TIME })
@@ -127,6 +129,7 @@ const QrCode: React.FC<any> = props =>  {
         restoreHandler()
       else
         submitHandler()
+
     }
   },[result])
 

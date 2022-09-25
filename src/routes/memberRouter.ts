@@ -508,7 +508,7 @@ memberRouter.post(member.borrow_helmet, (req, res, next) =>{
         } else {
             conn.beginTransaction((err) => {
                 memberDao.selectRoom(locker_id, room_id, conn).then((result: any) => {
-                    if(result == null)
+                    if(result == [] || result[0] == undefined)
                         throw {code: Values.HELMET_CANNOT_BORROW}
                     result = camelcaseKeysDeep(result)
                     console.log(result[0].status)
