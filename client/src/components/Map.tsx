@@ -134,12 +134,23 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#ff4500",
     },
   },
+  info: {
+    display: 'block',
+    backgroundColor: `${COLORS.HELMETSER}`,
+    color: 'white',
+    textAlign: 'center',
+    height: '24px',
+    lineHeight: '22px',
+    borderRadius: '4px',
+    padding: '0px 10px'
+  }
 }));
 
 type iLocker = {
   lockerId: number;
   totalCapacity: number;
   currentCapacity: number;
+  repairCapacity: number;
   locationX: number;
   locationY: number;
 };
@@ -326,33 +337,42 @@ const Map: React.FC<any> = (props) => {
         });
     } else {
     }
-    // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
-    const iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
-    // 인포윈도우를 생성합니다
-    const infowindow = new kakao.maps.InfoWindow({
-        content: iwContent,
-        removable: iwRemoveable,
-    });
 
+    
     lockers.forEach((el, index) => {
         // 마커를 생성합니다
+        let position;
         const marker = new kakao.maps.Marker({
-        //마커가 표시 될 지도
-        map: map,
-        //마커가 표시 될 위치
-        position: new kakao.maps.LatLng(el.locationX, el.locationY),
-        //마커에 hover시 나타날 title
-        title: el.lockerId,
-        image: markerImage,
-
-        clickable: true,
+            //마커가 표시 될 지도
+            map: map,
+            //마커가 표시 될 위치
+            position: new kakao.maps.LatLng(el.locationX, el.locationY),
+            //마커에 hover시 나타날 title
+            title: el.lockerId,
+            image: markerImage,
+            
+            clickable: true,
         });
+        const customOverlay = new kakao.maps.CustomOverlay({
+            map: map,
+            position: new kakao.maps.LatLng(el.locationX, el.locationY),
+            content: `<div style="display: block;
+            background-color: orangeRed;
+            color: white;
+            text-align: center;
+            height: 24px;
+            line-height: 22px;
+            border-radius: 4px;
+            padding: 0px 10px" >${((lockers[index].totalCapacity)-(lockers[index].currentCapacity)-(lockers[index].repairCapacity))}/${lockers[index].totalCapacity}</div>`,
+            yAnchor: 1 
+        });
+        //customOverlay()
+
         kakao.maps.event.addListener(marker, "click", function () {
-        // 마커 위에 인포윈도우를 표시합니다
-        infowindow.open(map, marker);
-        // handleNew(index);
+            // 마커 위에 인포윈도우를 표시합니다
+
+            handleNew(index);
         });
     });
     //getLocker()

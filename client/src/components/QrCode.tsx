@@ -3,6 +3,7 @@ import QrReader from "react-web-qr-reader";
 import axios from "axios";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { Button, Container, CssBaseline, makeStyles, Typography } from "@material-ui/core";
 import {
   member as v_member,
   basic,
@@ -12,6 +13,9 @@ import {
 import ToastStr from "../request/toastStr";
 import { useSnackbar } from "notistack";
 import DialogRent from "./Dialog";
+import { COLORS } from "./Theme";
+import { borderLeft, textAlign } from "@material-ui/system";
+import { classNames } from "react-select/src/utils";
 
 type iRoom = {
   lockerId: number;
@@ -19,9 +23,35 @@ type iRoom = {
   state: number;
 };
 
+const useStyles = makeStyles((theme) => ({
+
+  nanumSquare_regular: {
+      fontFamily: 'NanumR',
+  },
+  logo :{
+      fontSize: '10vw',
+      fontWeight: 'bolder',
+      color: `${COLORS.HELMETSER}`,
+      margin: '5vh 0',
+      textAlign: 'center'
+  },
+  container: {
+      heigth: '100vh',
+      width: '100vw',
+      textAlign: 'center',
+  },
+  qr: {
+    marginTop: '5vh',
+    fontSize: '5vw',
+    color: `${COLORS.HELMETSER}`,
+    textAlign: 'center'
+  },
+}));
+
 const SERVER = basic.server;
 
 const QrCode: React.FC<any> = (props) => {
+  const classes = useStyles();
   let history = useHistory();
   const state: any = history.location.state;
   const status = state.status;
@@ -179,13 +209,15 @@ const QrCode: React.FC<any> = (props) => {
   if(!status){
     return (
       <>
+        <Typography className = {classes.logo}>HELMETSER</Typography>
         <QrReader
           delay={delay}
           style={previewStyle}
           onError={handleError}
           onScan={handleScan}
         />
-        <p>{result}</p>
+        <Typography className = {classes.qr}>QR을 찍어주세요 :)</Typography>
+        <div className = {classes.qr}></div>
         <DialogRent
           open={rentDialog === false ? false : true}
           handleClose={() => handleClose()}
@@ -200,6 +232,7 @@ const QrCode: React.FC<any> = (props) => {
   else{
     return (
       <>
+        <Typography className = {classes.logo}>HELMETSER</Typography>
         <QrReader
           delay={delay}
           style={previewStyle}
