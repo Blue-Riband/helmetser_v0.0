@@ -8,7 +8,7 @@ export const SNACKBAR_TIME = process.env.NODE_ENV === 'production' ? 5000 : 2000
 
 // path
 const VERSION = '/v0';
-const SERVER_URL = 'http://13.125.36.254:5000'
+const SERVER_URL = 'http://3.34.130.97:5000'
 const SERVER_DEV_URL = 'http://localhost:5000'
 
 const SERVER = process.env.NODE_ENV === 'production' ? SERVER_URL + VERSION : SERVER_DEV_URL + VERSION;
