@@ -6,6 +6,7 @@
     "@babel/core": "7.12.3",
     "@material-ui/system": "^4.12.2",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
+    "@ramonak/react-progress-bar": "^5.0.2",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
