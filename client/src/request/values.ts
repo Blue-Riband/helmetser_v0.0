@@ -1,3 +1,4 @@
+import { recomposeColor } from "@material-ui/core";
 import { STATUS_CODES } from "http";
 
 // Global
@@ -40,6 +41,7 @@ const HELMET = '/helmet'
 const POINT = '/point'
 const STATUS = '/status'
 const RECORD = '/record'
+const ROOM = '/room'
 
 const DISPLAYIMAGE = '/displayImage'
 const DISPLAYFILE = '/displayFile'
@@ -86,6 +88,7 @@ export const member = {
     restore_helmet: RESTORE + HELMET,
     get_member: GET + MEMBER,
     get_record: GET + RECORD,
+    get_room: GET + ROOM,
 }
 
 export const util = {

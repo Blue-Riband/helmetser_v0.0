@@ -604,4 +604,18 @@ export default class MemberDao {
             }
         )
     })
+
+    selectRoomByLocker = (lockerId: string, conn?:any) => new Promise((resolve, reject) => {
+        let sql = "SELECT room_id, locker_id, status\
+                    FROM room\
+                    WHERE locker_id = ?\
+                    ORDER BY room_id ASC"
+
+
+        database.query(sql, [lockerId], conn).then(
+            (result: any) => {
+                resolve(result)
+            }
+        )
+    })
 }
