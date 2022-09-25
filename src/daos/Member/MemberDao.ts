@@ -365,7 +365,7 @@ export default class MemberDao {
                 reject(err)
             });
     }) 
-    
+
     selectCheckRoom = (lockerId: number, roomId: number, conn?:any) => new Promise((resolve, reject) => {
         let sql = "SELECT r.status\
                     FROM room r\
@@ -574,6 +574,19 @@ export default class MemberDao {
         database.query(sql, [memberId], conn).then(
             (result: any) => {
                 resolve(result[0])
+            }
+        )
+    })
+
+    selectMemberInfo = (memberId: string, conn?:any) => new Promise((resolve, reject) => {
+        let sql = "SELECT member_id, reg_date, point , membership_code, name, phone\
+                    FROM member\
+                    WHERE member_id = ?"
+
+
+        database.query(sql, [memberId], conn).then(
+            (result: any) => {
+                resolve(result)
             }
         )
     })

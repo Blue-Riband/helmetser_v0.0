@@ -83,6 +83,7 @@ export const member = {
     get_locker: GET + LOCKER,
     borrow_helmet: BORROW + HELMET, 
     restore_helmet: RESTORE + HELMET,
+    get_member: GET + MEMBER,
 }
 
 export const util = {

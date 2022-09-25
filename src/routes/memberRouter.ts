@@ -663,4 +663,30 @@ memberRouter.post(member.restore_helmet, (req, res, next) =>{
     })
 })
 
+
+memberRouter.get(member.get_member, (req, res, next) => {
+    let b_params = req.body, res_json: any = {};
+    //const {member_id} = b_params;
+    let query: any = typeConverUtil.convert(req.query)
+
+    if (query == null) {
+        res_json = setResponseData(res_json, Values.EXCEPTION_CODE, Values.EXCEPTION_MESSAGE);
+        res_json.msg = "Query Type Error!"
+        return res.json(res_json)
+    }
+
+    memberDao.selectMemberInfo(query.member_id).then((result: any) => {
+        result = camelcaseKeysDeep(result)
+        return plainToClass(Member, result)
+    }).then((member: any)=>{
+        res_json = setResponseData(res_json, Values.SUCCESS_CODE, Values.SUCCESS_MESSAGE)
+        res_json.member = member;
+    }).catch(err => {
+        res_json = setResponseData(res_json, Values.EXCEPTION_CODE, Values.EXCEPTION_MESSAGE);
+        res_json.err = err;
+    }).then(() => {
+        res.json(res_json)
+    })
+})
+
 export default memberRouter;
