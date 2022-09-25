@@ -486,13 +486,18 @@ memberRouter.post(member.borrow_helmet, (req, res, next) =>{
                 memberDao.selectRoom(locker_id, room_id, conn).then((result: any) => {
                     result = camelcaseKeysDeep(result)
                     console.log(result[0].status)
-                    if (result[0].status != 0) {
+                    if ((result[0].status != 0) && (result[0].helmet_status != 0)) {
                        throw {code: Values.HELMET_CANNOT_BORROW}
                     } else {
                         helmet_id =  result[0].helmetId
                         console.log(result)
                         return result
                     }
+                }).then((result: any) => {
+                    return memberDao.selectMemberPoint(member_id) 
+                }).then((result: any) => {
+                    if(result.point < 15000)
+                        throw {code: Values.MONEY_NOT_ENOUGH}
                 }).then((result: any) => {
                     return memberDao.insertRentSheet(member_id, helmet_id, locker_id, room_id) 
                 }).then((result: any)=>{
@@ -503,12 +508,106 @@ memberRouter.post(member.borrow_helmet, (req, res, next) =>{
                     return memberDao.updateLockerCurrent(locker_id)
                 }).then((result: any)=>{
                     return memberDao.updateRoomStatusBorrowing(locker_id, room_id)
+                }).then(()=>{
+                    res_json = setResponseData(res_json, Values.SUCCESS_CODE, Values.SUCCESS_MESSAGE)
+                }).catch(err => {
+                    if (err.hasOwnProperty('code')) {
+                        res_json = setResponseData(res_json, Values.FAIL_CODE, Values.FAIL_MESSAGE)
+                        if (err.code == Values.FAIL_CODE) {
+                        
+                            res_json.msg = "There is no Member to Delete"
+                        } 
+                        else if(err.code == Values.HELMET_CANNOT_BORROW){
+                            res_json.code = err.code
+                            res_json.msg = "room empty"
+                        }
+                        else if(err.code == Values.MONEY_NOT_ENOUGH){
+                            res_json.code = err.code
+                            res_json.msg = "money not enough"
+                        }
+                        else {
+                            res_json.msg = err.msg
+                        }
+                    } else {
+                        res_json = setResponseData(res_json, Values.EXCEPTION_CODE, Values.EXCEPTION_MESSAGE);
+                        res_json.err = err
+                    }
+                    conn.rollback();
+                }).then(() => {
+                    conn.commit((err) => {
+                        if (err) {
+                            conn.rollback(() => {
+                                conn.release();
+                            })
+                            res_json = setResponseData(res_json, Values.FAIL_CODE, Values.FAIL_MESSAGE);
+                            res_json.msg = err;
+                        } else {
+                            conn.release();
+                        }
+                    })
+                })
+                    .then(() => {
+                        res.json(res_json)
+                    })
+            })
+        }
+    })
+})
+
+memberRouter.post(member.restore_helmet, (req, res, next) =>{
+    let b_params = req.body, res_json: any = {};
+    const { member_id, locker_id, room_id } = b_params;
+    let query: any = typeConverUtil.convert(req.query)
+    console.log(locker_id, room_id)
+    let helmet_id;
+
+    if (query == null) {
+        res_json = setResponseData(res_json, Values.EXCEPTION_CODE, Values.EXCEPTION_MESSAGE);
+        res_json.msg = "Query Type Error!"
+        return res.json(res_json)
+    }
+
+    database.getConnection((err: any, conn: any) => {
+        if (err) {
+            res_json = setResponseData(res_json, Values.FAIL_CODE, Values.FAIL_MESSAGE);
+            res_json.msg = err;
+            res.json(res_json)
+        } else {
+            conn.beginTransaction((err) => {
+                memberDao.selectCheckRoom(locker_id, room_id, conn)
+                .then((result: any) => {
+                    result = camelcaseKeysDeep(result)
+                    console.log(result[0].status)
+                    if (result[0].status != 1) {
+                       throw {code: Values.HELMET_CANNOT_RESTORE}
+                    }
+                }).then(() => {
+                    return memberDao.selectHelmetId(member_id)
+                }).then((result: any)=>{
+                    result = camelcaseKeysDeep(result)
+                    helmet_id = result[0].helmet_id
+                }).then(() => {
+                    return memberDao.updateRentSheet(member_id, locker_id, room_id) 
+                }).then(()=>{
+                    return memberDao.updateMemberStatusRestored(member_id)
+                }).then(()=>{
+                    return memberDao.updateHelmetStatusRestored(helmet_id)
+                }).then(()=>{
+                    return memberDao.updateLockerCurrentRestored(locker_id)
+                }).then(()=>{
+                    return memberDao.updateRoomStatusRestored(locker_id, room_id)
+                }).then(()=>{
+                    res_json = setResponseData(res_json, Values.SUCCESS_CODE, Values.SUCCESS_MESSAGE)
                 }).catch(err => {
                     if (err.hasOwnProperty('code')) {
                         res_json = setResponseData(res_json, Values.FAIL_CODE, Values.FAIL_MESSAGE)
                         if (err.code == Values.FAIL_CODE) {
                             res_json.msg = "There is no Member to Delete"
-                        } else {
+                        } else if(err.code == Values.HELMET_CANNOT_RESTORE){
+                            res_json.code = err.code
+                            res_json.msg = "room is full"
+                        }
+                        else{
                             res_json.msg = err.msg
                         }
                     } else {

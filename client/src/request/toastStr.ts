@@ -33,6 +33,11 @@ const ToastStr = {
     DELETE_ACCOUNT_MESSAGE_FAIL_STR : "입력한 내용을 다시 한 번 확인해주세요.",
     DELETE_ACCOUNT_FAIL_STR : "입력한 내용을 다시 한 번 확인해주세요.",
     BORROW_SUCCESS : "헬멧 빌리기 성공!!",
+    RESTORE_SUCCESS : "헬멧 반납하기 성공!!",
+    ROOM_FULL : "락커룸이 안에 들어있습니다.",
+    MONEY_NOT_ENOUGH : "현재 포인트가 충분하지 않습니다.",
+    HELMET_CANNOT_BORROW : "락커룸에 대여가능한 헬멧이 없습니다.",
+
 
     REQUEST_GET_POST_FAIL_STR : "요청에 실패했습니다.\n다시 시도해 주세요."
 }

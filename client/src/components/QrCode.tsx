@@ -25,7 +25,7 @@ const QrCode: React.FC<any> = (props) => {
   let history = useHistory();
   const { member } = props;
   const [room, setLockers] = useState<iRoom[]>([]);
-  const [declineDialog, setDeclineDialog] = useState<boolean | number>(false);
+  const [rentDialog, setRentDialog] = useState<boolean | number>(false);
   const { enqueueSnackbar } = useSnackbar();
   const delay = 500;
 
@@ -47,14 +47,14 @@ const QrCode: React.FC<any> = (props) => {
     console.log(error);
   };
 
-  const handleClose = (key: string) => {
-    setDeclineDialog((prevState) => false);
+  const handleClose = () => {
+    setRentDialog((prevState) => false);
   };
 
   const handleOpen = (index: number) => {
     console.log("open", index);
-    if (declineDialog === false) {
-      setDeclineDialog((prevState) => index);
+    if (rentDialog === false) {
+      setRentDialog((prevState) => index);
     }
   };
 
@@ -83,6 +83,117 @@ const QrCode: React.FC<any> = (props) => {
             variant: "success",
             autoHideDuration: SNACKBAR_TIME,
           });
+        } else if (data.code === Values.MONEY_NOT_ENOUGH) {
+          enqueueSnackbar(ToastStr.MONEY_NOT_ENOUGH, {
+            variant: "warning",
+            autoHideDuration: SNACKBAR_TIME,
+          });
+        } else if (data.code === Values.HELMET_CANNOT_BORROW) {
+          enqueueSnackbar(ToastStr.HELMET_CANNOT_BORROW, {
+            variant: "warning",
+            autoHideDuration: SNACKBAR_TIME,
+          });
+        } else if (data.code === Values.FAIL_CODE) {
+          enqueueSnackbar(ToastStr.REQUEST_GET_POST_FAIL_STR, {
+            variant: "error",
+            autoHideDuration: SNACKBAR_TIME,
+          });
+        }
+      })
+      .catch((error: any) => {
+        if (error.response) {
+          console.log("error?", error.response);
+          enqueueSnackbar(ToastStr.REQUEST_GET_POST_FAIL_STR, {
+            variant: "error",
+            autoHideDuration: SNACKBAR_TIME,
+          });
+        }
+      });
+  };
+
+  const restoreHandler = () => {
+    const split = result.split(" ");
+    console.log(split);
+    axios({
+      method: "POST",
+      data: {
+        member_id: member.id,
+        locker_id: split[0],
+        room_id: split[1],
+      },
+      withCredentials: true,
+      url: SERVER + v_member.member + v_member.restore_helmet,
+    })
+      .then((res) => {
+        console.log("res?", res);
+
+        return res.data;
+      })
+      .then((data: any) => {
+        // console.log('data?', data)
+        if (data.code === Values.SUCCESS_CODE) {
+          enqueueSnackbar(ToastStr.BORROW_SUCCESS, {
+            variant: "success",
+            autoHideDuration: SNACKBAR_TIME,
+          });
+        } else if (data.code === Values.MONEY_NOT_ENOUGH) {
+          enqueueSnackbar(ToastStr.MONEY_NOT_ENOUGH, {
+            variant: "warning",
+            autoHideDuration: SNACKBAR_TIME,
+          });
+        } else if (data.code === Values.HELMET_CANNOT_BORROW) {
+          enqueueSnackbar(ToastStr.HELMET_CANNOT_BORROW, {
+            variant: "warning",
+            autoHideDuration: SNACKBAR_TIME,
+          });
+        } else if (data.code === Values.FAIL_CODE) {
+          enqueueSnackbar(ToastStr.REQUEST_GET_POST_FAIL_STR, {
+            variant: "error",
+            autoHideDuration: SNACKBAR_TIME,
+          });
+        }
+      })
+      .catch((error: any) => {
+        if (error.response) {
+          console.log("error?", error.response);
+          enqueueSnackbar(ToastStr.REQUEST_GET_POST_FAIL_STR, {
+            variant: "error",
+            autoHideDuration: SNACKBAR_TIME,
+          });
+        }
+      });
+  };
+
+  const restoreHandler = () => {
+    const split = result.split(" ");
+    console.log(split);
+    axios({
+      method: "POST",
+      data: {
+        member_id: member.id,
+        locker_id: split[0],
+        room_id: split[1],
+      },
+      withCredentials: true,
+      url: SERVER + v_member.member + v_member.restore_helmet,
+    })
+      .then((res) => {
+        console.log("res?", res);
+
+        return res.data;
+      })
+      .then((data: any) => {
+        // console.log('data?', data)
+        if (data.code === Values.SUCCESS_CODE) {
+          enqueueSnackbar(ToastStr.RESTORE_SUCCESS, {
+            variant: "success",
+            autoHideDuration: SNACKBAR_TIME,
+          });
+        } else if (data.code === Values.HELMET_CANNOT_RESTORE) {
+          enqueueSnackbar(ToastStr.ROOM_FULL, {
+            variant: "warning",
+            autoHideDuration: SNACKBAR_TIME,
+          });
         } else if (data.code === Values.FAIL_CODE) {
           enqueueSnackbar(ToastStr.REQUEST_GET_POST_FAIL_STR, {
             variant: "error",
@@ -103,7 +214,7 @@ const QrCode: React.FC<any> = (props) => {
 
   const refusal = () => {
     // postCompanyAppDelete();
-    handleClose("declineDialog");
+    handleClose();
   };
 
   useEffect(() => {
@@ -124,12 +235,12 @@ const QrCode: React.FC<any> = (props) => {
       />
       <p>{result}</p>
       <DialogRent
-        open={declineDialog === false ? false : true}
-        handleClose={() => handleClose("declineDialog")}
+        open={rentDialog === false ? false : true}
+        handleClose={() => handleClose()}
         title={"헬멧의 상태를 확인해주세요."}
-        memberName={declineDialog === false ? "" : member.name}
+        memberName={rentDialog === false ? "" : member.name}
         yesConfirm={refusal}
-        noConfirm={() => handleClose("declineDialog")}
+        noConfirm={() => handleClose()}
       />
     </>
   );
