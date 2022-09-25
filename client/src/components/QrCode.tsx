@@ -132,59 +132,6 @@ const QrCode: React.FC<any> = (props) => {
       .then((data: any) => {
         // console.log('data?', data)
         if (data.code === Values.SUCCESS_CODE) {
-          enqueueSnackbar(ToastStr.BORROW_SUCCESS, {
-            variant: "success",
-            autoHideDuration: SNACKBAR_TIME,
-          });
-        } else if (data.code === Values.MONEY_NOT_ENOUGH) {
-          enqueueSnackbar(ToastStr.MONEY_NOT_ENOUGH, {
-            variant: "warning",
-            autoHideDuration: SNACKBAR_TIME,
-          });
-        } else if (data.code === Values.HELMET_CANNOT_BORROW) {
-          enqueueSnackbar(ToastStr.HELMET_CANNOT_BORROW, {
-            variant: "warning",
-            autoHideDuration: SNACKBAR_TIME,
-          });
-        } else if (data.code === Values.FAIL_CODE) {
-          enqueueSnackbar(ToastStr.REQUEST_GET_POST_FAIL_STR, {
-            variant: "error",
-            autoHideDuration: SNACKBAR_TIME,
-          });
-        }
-      })
-      .catch((error: any) => {
-        if (error.response) {
-          console.log("error?", error.response);
-          enqueueSnackbar(ToastStr.REQUEST_GET_POST_FAIL_STR, {
-            variant: "error",
-            autoHideDuration: SNACKBAR_TIME,
-          });
-        }
-      });
-  };
-
-  const restoreHandler = () => {
-    const split = result.split(" ");
-    console.log(split);
-    axios({
-      method: "POST",
-      data: {
-        member_id: member.id,
-        locker_id: split[0],
-        room_id: split[1],
-      },
-      withCredentials: true,
-      url: SERVER + v_member.member + v_member.restore_helmet,
-    })
-      .then((res) => {
-        console.log("res?", res);
-
-        return res.data;
-      })
-      .then((data: any) => {
-        // console.log('data?', data)
-        if (data.code === Values.SUCCESS_CODE) {
           enqueueSnackbar(ToastStr.RESTORE_SUCCESS, {
             variant: "success",
             autoHideDuration: SNACKBAR_TIME,
